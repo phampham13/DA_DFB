@@ -1,0 +1,98 @@
+.wrapper {
+    min-height: 100vh;
+    width: 100%;
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        margin: 100px auto;
+        border: 2px solid #ccc;
+        width: 40%;
+        align-items: center;
+        justify-content: space-evenly;
+
+        .form {
+            width: 100%;
+            min-height: 100px;
+            padding: 32px 24px;
+            text-align: center;
+            background: #fff;
+            border-radius: 2px;
+            margin-top: 24px;
+            //align-self: center;
+
+
+            .spacer {
+                margin-top: 36px;
+            }
+
+            .form-group {
+                display: flex;
+                margin-bottom: 16px;
+
+                .form-label,
+                .form-message {
+                    text-align: left;
+                }
+
+                .form-label {
+                    width: 20%;
+                    font-weight: 700;
+                    line-height: 1.8rem;
+                    font-size: 1rem;
+                }
+
+                span {
+                    color: red;
+                    font-size: 12px;
+                }
+
+                .form-control {
+                    width: 80%;
+                    padding: 0px 12px;
+                    border: none;
+                    border-bottom: 1px solid var(--main-color);
+                    outline: none;
+                    font-size: 1rem
+                }
+
+                .form-control:hover {
+                    border-color: var(--main-color);
+                }
+
+                .form-message {
+                    font-size: 1rem;
+                    line-height: 1.6rem;
+                    padding: 4px 0 0;
+                }
+            }
+
+            .form-group.invalid .form-control {
+                border-color: #f33a58;
+            }
+
+            .form-group.invalid .form-message {
+                color: #f33a58;
+            }
+
+            .form-submit {
+                outline: none;
+                width: fit-content;
+                background-color: var(--sub-color2);
+                margin-top: 12px;
+                padding: 5px 10px;
+                font-weight: 600;
+                color: #fff;
+                border: none;
+                font-size: 14px;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+
+            .form-submit:hover {
+                background-color: rgb(48, 167, 180, 0.8);
+            }
+
+        }
+    }
+}

@@ -1,0 +1,145 @@
+.wrapper {
+    background-color: rgb(245, 245, 245);
+    //background-color: #e7e8ec;
+    width: 100%;
+    min-height: 100vh;
+
+
+    .cart-container {
+        height: 100%;
+        width: 100%;
+        margin: 0 auto;
+        padding: 20px 30px 50px 30px;
+
+        .cart-product {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+
+            .left {
+                width: 70%;
+                min-width: 700px;
+
+                .header {
+                    background: rgb(255, 255, 255);
+                    padding: 9px 16px;
+                    border-radius: 4px;
+                    display: flex;
+                    align-items: center;
+
+                    .checkbox {
+                        .ant-checkbox-checked .ant-checkbox-inner {
+                            background-color: #e11b1e;
+                            border-color: #e11b1e;
+                        }
+
+                        .ant-checkbox:hover .ant-checkbox-inner {
+                            border-color: #e11b1e;
+                        }
+                    }
+
+                    span {
+                        color: rgb(36, 36, 36);
+                        font-weight: 400;
+                        font-size: 13px;
+                    }
+                }
+
+                .list-product {
+                    .wrapper-items {
+                        display: flex;
+                        align-items: center;
+                        padding: 9px 16px;
+                        background: #fff;
+                        margin-top: 12px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+                        .count-item {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-evenly;
+                            width: 84px;
+                            border: 1px solid #ccc;
+                            border-radius: 4px;
+
+                            .ant-input-number.ant-input-number-sm {
+                                .ant-input-number-handler-wrap {
+                                    display: none !important;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            .right {
+                width: 25%;
+                min-width: 320px;
+                margin-left: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                align-items: center;
+                padding: 20px;
+                background: #fff;
+                height: fit-content;
+
+                .price-total {
+                    width: 100%;
+                    display: flex;
+
+                    justify-content: space-around;
+                    padding: 17px 20px;
+
+                    border-bottom-right-radius: 6px;
+                    border-bottom-left-radius: 6px;
+
+                }
+
+                button {
+                    transition: height 0.2s;
+                    display: block;
+                    text-align: center;
+                    margin-bottom: 10px;
+                    padding: 10px 20px;
+                    width: 100%;
+                    font-size: 20px;
+                    background-color: var(--sub-color2);
+                    color: white;
+
+                    &:hover {
+                        height: 60px;
+                        //background-color: var(--sub-color2);
+                        border: none;
+                    }
+                }
+            }
+        }
+
+        .empty {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            align-items: center;
+            min-height: 350px;
+            justify-content: center;
+
+            img {
+                scale: 1.3;
+            }
+
+            h3 {
+                margin-top: 30px;
+            }
+
+            p {
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 20px;
+            }
+        }
+    }
+}

@@ -1,0 +1,39 @@
+.wrapper {
+    padding: 20px;
+
+    .tab {
+        height: 80%;
+        width: 90%;
+
+        .chart-container {
+            padding-bottom: 20px;
+
+            h5 {
+                font-size: 1.1em;
+                font-weight: 600;
+            }
+
+            p {
+                font-size: 1em;
+                font-weight: 500;
+
+                span {
+                    color: #0088FF;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        .about {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            gap: 20px;
+
+            p {
+                display: inline-block;
+            }
+        }
+    }
+
+}

@@ -1,0 +1,65 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  .wrap {
+    padding: 30px 20px;
+  }
+
+  .editbtn {
+    color: #3498db;
+    cursor: pointer;
+    font-size: 20px;
+    margin: 5px;
+  }
+
+  .colortext {
+    color: red;
+    cursor: pointer;
+    font-size: 20px;
+    margin: 5px;
+  }
+
+  .order-container {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px;
+  }
+
+  .order-info {
+    width: 45%;
+  }
+
+  .order-details {
+    width: 45%;
+  }
+
+  .order-item {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+
+  .product-image {
+    max-width: 100px;
+    max-height: 100px;
+    margin-right: 10px;
+  }
+
+  .order-field,
+  .item-field {
+    margin: 5px 0;
+  }
+
+  .order-header {
+    color: #333;
+  }
+
+  .item-list {
+    max-height: 400px;
+    overflow-y: scroll;
+  }
+}

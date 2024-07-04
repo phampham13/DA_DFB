@@ -1,0 +1,97 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    .editbtn {
+        color: #3498db;
+        cursor: pointer;
+        font-size: 20px;
+        margin: 5px;
+    }
+
+    .colortext {
+        color: red;
+        cursor: pointer;
+        font-size: 20px;
+        margin: 5px;
+    }
+
+    .wrap {
+        margin: 10px 20px;
+
+        .topBar {
+            text-align: right;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 30px;
+
+            /*.create-btn {
+                border: 0;
+                text-align: center;
+                display: inline-block;
+                padding: 7px;
+                margin: 7px;
+                color: #ffffff;
+                background-color: #36a2eb;
+                border-radius: 8px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: box-shadow 200ms ease-out;
+            }*/
+
+            .create-btn:hover {
+                background-color: rgba(54, 163, 235, 0.8);
+            }
+
+            .delete-btn {
+                border: 0;
+                text-align: center;
+                display: inline-block;
+                padding: 7px;
+                margin: 7px;
+                color: #ffffff;
+                background-color: rgb(246, 84, 84);
+                border-radius: 8px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: box-shadow 200ms ease-out;
+            }
+
+            .delete-btn:hover {
+                background-color: rgb(246, 84, 84, 0.8);
+            }
+
+        }
+
+        .table {
+            .rdt_Table {
+                .rdt_TableHeader {
+                    font-size: 20px;
+                    font-weight: bold;
+                }
+
+                .rdt_TableRow {
+                    font-size: 5px;
+                }
+            }
+
+            .editIcon {
+                max-width: 50px;
+            }
+
+            .deleteIcon {
+                max-width: 50px;
+            }
+        }
+
+        .image-cell {
+            width: 45px;
+            height: 60px;
+            object-fit: cover;
+            //border-radius: 50%; // Làm tròn góc cho ảnh (nếu muốn)
+        }
+
+    }
+}

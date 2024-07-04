@@ -1,0 +1,20 @@
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+    padding: 50px;
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        width: 70%;
+        margin: auto;
+        gap: 30px;
+        min-width: 600px;
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+}

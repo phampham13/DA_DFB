@@ -1,0 +1,154 @@
+.wrapper {
+    z-index: 1000;
+    width: 100%;
+    display: flex;
+    position: fixed;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+    height: 65px;
+    border-bottom: 1.5px solid var(--sub-color2);
+    //border-bottom: 2px solid var(--sub-color);
+    background-color: white;
+    font-weight: 700;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+    .box {
+        width: 90%;
+        height: 65px;
+        display: grid;
+        grid-template-columns: 150px 1fr 250px; // Điều chỉnh chiều rộng của các cột
+        align-items: center;
+        gap: 13px;
+        color: #5D7B6F;
+
+        .logo {
+            img {
+                height: 65px;
+            }
+        }
+
+        .category {
+            width: 90%; // Giảm chiều rộng của category
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            overflow: scroll;
+
+            .category-item {
+                min-width: 80px; // Giảm chiều rộng tối thiểu của các mục
+                height: 100%;
+
+                >a {
+                    display: block;
+                    padding-left: 8px;
+                    padding-right: 8px;
+                    line-height: 63.4px;
+                    text-decoration: none;
+                    color: var(--sub-color2);
+                }
+
+                .list-item {
+                    background-color: white;
+                    display: none;
+                }
+            }
+
+            .category-item:hover {
+                background-color: var(--sub-color2);
+
+                >a {
+                    color: white;
+                }
+            }
+        }
+
+        .user {
+            width: 100%; // Tăng chiều rộng của user
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            ul {
+                display: none;
+            }
+
+            div {
+                position: relative;
+                margin-right: 10px; // Thêm khoảng cách giữa các icon
+            }
+
+            div:hover {
+                ul {
+                    background-color: white;
+                    margin: 0;
+                    padding: 0;
+                    box-shadow: 0px 0px 14px 4px rgba(0, 0, 0, 0.1);
+                    position: absolute;
+                    display: block;
+
+                    li {
+                        height: 35px;
+                        text-align: start;
+
+                        a {
+                            color: var(--sub-color2);
+                            font-size: 12px;
+                            line-height: 35px;
+                            display: block;
+                            padding-left: 5px;
+                        }
+                    }
+
+                    li:hover {
+                        background-color: rgb(216, 219, 222);
+                    }
+                }
+            }
+
+            .card,
+            .cart {
+                position: relative;
+
+                p {
+                    position: absolute;
+                    display: inline-block;
+                    background: #da3f3f;
+                    border-radius: 999px;
+                    width: 20px;
+                    height: 20px;
+                    line-height: 20px;
+                    color: #fff;
+                    font-size: 12px;
+                    top: -5px;
+                    right: 10px;
+                    text-align: center;
+                    border: none;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    .box {
+        grid-template-columns: 1fr;
+        text-align: center;
+
+        .logo {
+            margin-bottom: 10px;
+        }
+
+        .category {
+            .category-item {
+                min-width: auto;
+            }
+        }
+
+        .user {
+            flex-direction: column;
+            margin-top: 10px;
+        }
+    }
+}
