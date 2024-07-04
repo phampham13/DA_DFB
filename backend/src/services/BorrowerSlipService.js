@@ -321,7 +321,12 @@ const updateState = (id, newState, lateFee) => {
             }
 
             if (newState === 3) {
-                await BlockedPhone.create({ phoneNumber: user.phoneNumber })
+                const checkPhone = BlockedPhone.findOne({
+                    phoneNumber: bSlip.phoneNumber
+                })
+                if (!checkPhone) {
+                    await BlockedPhone.create({ phoneNumber: user.phoneNumber })
+                }
             } else if (newState === 2) {
                 if (currentState === 3) {
                     //từ 3-> 2 không đổi userState vì chưa biết user thanh toán phí phạt chưa

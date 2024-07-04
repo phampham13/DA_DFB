@@ -228,8 +228,13 @@ const updateState = (id, newState) => {
       }
 
       if (newState === 3) {
-        const blockPhone = new BlockedPhone({ phoneNumber: bSlip.phoneNumber })
-        await blockPhone.save()
+        const checkPhone = BlockedPhone.findOne({
+          phoneNumber: bSlip.phoneNumber
+        })
+        if (!checkPhone) {
+          const blockPhone = new BlockedPhone({ phoneNumber: bSlip.phoneNumber })
+          await blockPhone.save()
+        }
       } else if (newState === 2) {
         if (currentState === 3) {
           const p = await BlockedPhone.findOne({ phoneNumber: bSlip.phoneNumber })
