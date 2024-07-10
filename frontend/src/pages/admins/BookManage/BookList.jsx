@@ -22,7 +22,7 @@ const BookList = () => {
   const [page, setPage] = useState(10);
 
   const [request, setRequest] = useState({
-    limit: 80,
+    limit: 100,
     page: 0,
     sort: "createdAt",
   });

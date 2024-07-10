@@ -147,20 +147,83 @@ const getDetailOffSlip = (id) => {
 const getAll = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const allBSlip = await OffBorrowerSlip.find().sort({
-        createdAt: -1,
-        updatedAt: -1,
+      const allBSlip = await OffBorrowerSlip.aggregate([
+        {
+          $addFields: {
+            statusOrder: {
+              $switch: {
+                branches: [
+                  { case: { $eq: ["$state", 3] }, then: 1 },
+                  { case: { $eq: ["$state", 1] }, then: 2 },
+                  { case: { $eq: ["$state", 2] }, then: 3 },
+                ],
+                default: 4, // Any other states, if needed
+              },
+            },
+          },
+        },
+        {
+          $sort: {
+            statusOrder: 1, // Sắp xếp theo statusOrder (3 -> 1 -> 2)
+            createdAt: -1,
+          },
+        },
+      ]);
+
+      if (!allBSlip) {
+        return resolve({
+          status: "ERR",
+          message: "No borrower slips found",
+        });
+      }
+
+      const statusStats = await OffBorrowerSlip.aggregate([
+        {
+          $group: {
+            _id: "$state",
+            count: { $sum: 1 },
+          },
+        },
+      ]);
+
+      const stat = [
+        { type: 'chờ xác nhận', value: 0 },
+        { type: 'đang mượn', value: 0 },
+        { type: 'đã trả', value: 0 },
+        { type: 'quá hạn', value: 0 },
+      ];
+
+      statusStats.forEach((statItem) => {
+        switch (statItem._id) {
+          case 0:
+            stat[0].value = statItem.count;
+            break;
+          case 1:
+            stat[1].value = statItem.count;
+            break;
+          case 2:
+            stat[2].value = statItem.count;
+            break;
+          case 3:
+            stat[3].value = statItem.count;
+            break;
+          default:
+            break;
+        }
       });
-      return resolve({
+
+      resolve({
         status: "OK",
         message: "Success",
         data: allBSlip,
+        stat: stat,
       });
     } catch (e) {
       reject(e);
     }
   });
 };
+
 
 const deleteMany = (ids) => {
   return new Promise(async (resolve, reject) => {

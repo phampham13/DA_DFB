@@ -19,8 +19,9 @@ const routes = {
 
     //admin
 
-    adminHome: '/admin',
+    //adminHome: '/admin',
     bookListAdmin: '/admin/books',
+    bookCategoryAdmin: '/admin/bookCategory',
     borrowerListAdmin: '/admin/borrowers',
     onSlipAdmin: '/admin/onSlip',
     offSlipAdmin: '/admin/offSlip',

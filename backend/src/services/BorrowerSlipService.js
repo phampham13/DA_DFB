@@ -240,17 +240,59 @@ const cancelBorrow = (id) => { //id của slip khác bookId
 const getAllBorrowerSlip = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const allBSlip = await BorrowerSlip.find().sort({ createdAt: -1, updatedAt: -1 })
-            return resolve({
+            const allBSlip = await BorrowerSlip.find().sort({ createdAt: -1, updatedAt: -1 });
+
+            const statusStats = await BorrowerSlip.aggregate([
+                {
+                    $group: {
+                        _id: "$state",
+                        count: { $sum: 1 }
+                    }
+                }
+            ]);
+
+            const stat = [
+                { type: 'chờ xác nhận', value: 0 },
+                { type: 'đang mượn', value: 0 },
+                { type: 'đã trả', value: 0 },
+                { type: 'quá hạn', value: 0 }
+            ];
+
+            statusStats.forEach(statItem => {
+                switch (statItem._id) {
+                    case 0:
+                        stat[0].value = statItem.count;
+                        break;
+                    case 1:
+                        stat[1].value = statItem.count;
+                        break;
+                    case 2:
+                        stat[2].value = statItem.count;
+                        break;
+                    case 3:
+                        stat[3].value = statItem.count;
+                        break;
+                    default:
+                        break;
+                }
+            });
+
+            const sortedBSlip = allBSlip.sort((a, b) => {
+                const statusOrder = { 0: 0, 3: 1, 1: 2, 2: 3 }; // Định nghĩa thứ tự status
+                return statusOrder[a.state] - statusOrder[b.state];
+            });
+
+            resolve({
                 status: 'OK',
                 message: 'Success',
-                data: allBSlip
-            })
+                data: sortedBSlip,
+                stat: stat
+            });
         } catch (e) {
-            reject(e)
+            reject(e);
         }
-    })
-}
+    });
+};
 
 const deleteMany = (ids) => {
     return new Promise(async (resolve, reject) => {

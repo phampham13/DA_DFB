@@ -18,12 +18,12 @@ import BorrowerSlips from '../pages/users/BorrowerSlips/BorrowerSlips';
 import UserOrders from '../pages/users/Orders/UserOrders';
 
 import BookList from '../pages/admins/BookManage/BookList';
+import BookCategory from '../pages/admins/BookManage/BookCategory';
 import OnBorrowerSlip from '../pages/admins/BorrowerSlip/OnBorrowerSlip';
 import OffBorrowerSlip from '../pages/admins/BorrowerSlip/OffBorrowerSlip';
 import BorrowerList from '../pages/admins/BorrowerAcc/BorrowerList';
 import Products from '../pages/admins/HandmadeManage/Products';
 import Orders from '../pages/admins/HandmadeManage/Orders';
-
 import Statistics from '../pages/admins/Statistics/Statistics';
 import DefaultLayout from '../layouts/AdminLayout/DefaultLayout/DefaultLayout';
 //import layout
@@ -50,8 +50,9 @@ const userRoutes = [
 const adminRoutes = [
     //{ path: routesConfig.adminHome, component: BookList, title: 'Quản lý sách' },
     { path: routesConfig.bookListAdmin, component: BookList, title: 'Quản lý sách' },
-    { path: routesConfig.onSlipAdmin, component: OnBorrowerSlip, title: 'Quản lý phiếu mượn sách On' },
-    { path: routesConfig.offSlipAdmin, component: OffBorrowerSlip, title: 'Quản lý phiếu mượn sách Off' },
+    { path: routesConfig.bookCategoryAdmin, component: BookCategory, title: 'Quản lý thể loại sách' },
+    { path: routesConfig.onSlipAdmin, component: OnBorrowerSlip, title: 'Quản lý phiếu mượn sách Online' },
+    { path: routesConfig.offSlipAdmin, component: OffBorrowerSlip, title: 'Quản lý phiếu mượn sách Offline (trực tiếp)' },
     { path: routesConfig.borrowerListAdmin, component: BorrowerList, title: 'Quản lý tài khoản bạn đọc' },
     { path: routesConfig.productsAdmin, component: Products, title: 'Sản phẩm' },
     { path: routesConfig.ordersAdmin, component: Orders, title: 'Đơn đặt hàng' },

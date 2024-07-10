@@ -49,8 +49,8 @@ function Sidebar({ setToggleButton }) {
   const handleActive = (detailName) => {
     setActive((prevState) => ({
       listBook: false,
+      listCategory: false,
       listOnSlip: false,
-
       listOffSlip: false,
       statisticSale: false,
       listOrder: false,
@@ -126,7 +126,7 @@ function Sidebar({ setToggleButton }) {
               {/* Sách*/}
               <div
                 className={cx('homeMenuItem', 'itemNav', {
-                  active: active.listBook
+                  active: active.listBook || active.listCategory
                 })}
                 onClick={() => handleShowDetail('showDetailBook')}
               >
@@ -161,6 +161,15 @@ function Sidebar({ setToggleButton }) {
                   >
                     <div className={cx('menuItemTitle')}>
                       <span>Thống kê sách</span>
+                    </div>
+                  </Link>
+                  <Link
+                    to="/admin/bookCategory"
+                    className={cx('homeMenuItem', 'itemNav', 'innerWrapCollapseItem')}
+                    onClick={() => handleActive('listCategory')}
+                  >
+                    <div className={cx('menuItemTitle')}>
+                      <span>Thể loại sách</span>
                     </div>
                   </Link>
                 </div>

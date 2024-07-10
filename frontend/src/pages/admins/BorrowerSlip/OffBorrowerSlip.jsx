@@ -385,10 +385,10 @@ const OffBorrowerSlip = () => {
             {record.state === 1 ? (
               <div>
                 {" "}
-                <Tag color="orange">Đang mượn</Tag>
+                <Tag color="yellow">Đang mượn</Tag>
               </div>
             ) : record.state === 2 ? (
-              <Tag color="green">Đã trả</Tag>
+              <Tag color="blue">Đã trả</Tag>
             ) : (
               <Tag color="red">Quá hạn</Tag>
             )}
