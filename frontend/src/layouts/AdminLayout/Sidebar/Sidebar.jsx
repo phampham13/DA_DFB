@@ -50,7 +50,7 @@ function Sidebar({ setToggleButton }) {
     setActive((prevState) => ({
       listBook: false,
       listOnSlip: false,
-      listOnSlip: false,
+
       listOffSlip: false,
       statisticSale: false,
       listOrder: false,

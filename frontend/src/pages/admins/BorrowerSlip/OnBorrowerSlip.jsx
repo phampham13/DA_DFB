@@ -115,7 +115,7 @@ const OnBorrowerSlip = () => {
 
     fetchData();
   }, [selectedRow, reload]);
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+  /*const handleSearch = (selectedKeys, confirm, dataIndex) => {
     if (dataIndex === "dueDate") {
       const dateOutput = moment(selectedKeys[0], "DD/MM/YYYY").format(
         "YYYY-MM-DD"
@@ -124,6 +124,12 @@ const OnBorrowerSlip = () => {
     } else {
       setSearchText(selectedKeys[0]);
     }
+    setSearchedColumn(dataIndex);
+  };*/
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
 
@@ -168,7 +174,7 @@ const OnBorrowerSlip = () => {
   };
   const handleEdit = async (src) => {
     // setProduct(res.data);
-    console.log("fasfsdfs", src);
+    console.log("handle edit", src);
 
     setDatasrc(src);
     setdefaultState(src.state);
@@ -207,14 +213,20 @@ const OnBorrowerSlip = () => {
   };
   const handleDeleteMany = async () => {
     const ids = [...selectedRowKeys];
+    const body = {
+      ids: ids,
+    };
 
-    const res = await DeleteManySlipOn(token, ids);
-    setReload(!reload);
-    if (res) {
+    const res = await DeleteManySlipOn(token, body);
+
+    if (res.status === "OK") {
       toast.success("Xóa thành công");
       selectedRowKeys.length = 0;
-      setShowDeleteModalMany(false);
+      setReload(!reload);
+    } else {
+      toast.error(res.message)
     }
+    setShowDeleteModalMany(false);
   };
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -326,7 +338,10 @@ const OnBorrowerSlip = () => {
       />
     ),
     onFilter: (value, record) =>
-      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+      record[dataIndex[0]][dataIndex[1]]
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase()),
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
         setTimeout(() => searchInput.current?.select(), 100);
@@ -356,11 +371,11 @@ const OnBorrowerSlip = () => {
     },
 
     {
-      title: "Tên bạn đọc",
-      dataIndex: "name",
+      title: "Tên người dùng",
+      dataIndex: ['userDetails', 'name'],
       key: "name",
       width: "20%",
-      ...getColumnSearchProps("name"),
+      ...getColumnSearchProps(['userDetails', 'name']),
       render: (_, record) => {
         return (
           <span onClick={() => handleViewDetail(record._id)}>
@@ -370,12 +385,12 @@ const OnBorrowerSlip = () => {
       },
     },
     {
-      title: "SĐT",
-      dataIndex: "phoneNumber",
+      title: "SĐT người dùng",
+      dataIndex: ['userDetails', 'phoneNumber'],
       key: "phoneNumber",
-      ...getColumnSearchProps("phoneNumber"),
+      ...getColumnSearchProps(['userDetails', 'phoneNumber']),
       render: (_, record) => {
-        return <span>{record.shippingAddress?.phoneNumber || "N/A"}</span>;
+        return <span>{record.userDetails?.phoneNumber || "N/A"}</span>;
       },
     },
     {
@@ -385,12 +400,11 @@ const OnBorrowerSlip = () => {
       width: "20%",
       sorter: (a, b) => a.totalAmount - b.totalAmount,
       sortDirections: ["descend", "ascend"],
-      ...getColumnSearchProps("totalAmount"),
     },
     {
       title: "Hạn trả",
       dataIndex: "dueDate",
-      ...getColumnSearchProps("dueDate"),
+      //...getColumnSearchProps("dueDate"),
       render: (_, record) => {
         return (
           <>
@@ -402,7 +416,7 @@ const OnBorrowerSlip = () => {
     {
       title: "Ngày tạo",
       dataIndex: "createdAt",
-      ...getColumnSearchProps("createdAt"),
+      //...getColumnSearchProps("createdAt"),
       render: (_, record) => {
         return (
           <>
@@ -414,6 +428,25 @@ const OnBorrowerSlip = () => {
     {
       title: "Trạng thái",
       dataIndex: "state",
+      filters: [
+        { text: "Đang chờ", value: "Đang chờ" },
+        { text: "Đang mượn", value: "Đang mượn" },
+        { text: "Đã trả", value: "Đã trả" },
+        { text: "Quá hạn", value: "Quá hạn" },
+      ],
+      onFilter: (value, record) => {
+        const state = record.state;
+        if (value === "Đang chờ") {
+          return state === 0;
+        } else if (value === "Đang mượn") {
+          return state === 1;
+        } else if (value === "Đã trả") {
+          return state === 2;
+        } else if (value === "Quá hạn") {
+          return state === 3;
+        }
+        return true; // Không filter nếu không có giá trị filter nào được chọn
+      },
 
       render: (_, record) => {
         return (
@@ -421,10 +454,10 @@ const OnBorrowerSlip = () => {
             {record.state === 1 ? (
               <div>
                 {" "}
-                <Tag color="orange">Đang mượn</Tag>
+                <Tag color="green">Đang mượn</Tag>
               </div>
             ) : record.state === 2 ? (
-              <Tag color="green">Đã trả</Tag>
+              <Tag color="blue">Đã trả</Tag>
             ) : record.state === 3 ? (
               <Tag color="red">Quá hạn</Tag>
             ) : (

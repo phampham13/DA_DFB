@@ -331,8 +331,9 @@ const BookList = () => {
     setShowModalUp(false);
     setAddModal(false);
 
-    getAll();
-    setReload(!reload);
+    setTimeout(() => {
+      setReload(!reload);
+    }, 400);
   };
   const handleDelete = () => {
     ApiBOOK.DeleteBook(IdDelete, token)
@@ -362,9 +363,12 @@ const BookList = () => {
     setReload(!reload);
     selectedRowKeys.length = 0;
 
-    if (res) {
+    if (res.status === "OK") {
       toast.success("Xóa thành công");
+    } else {
+      toast.error(res.message)
     }
+    setShowDeleteManyModal(false)
   };
   return (
     <>
