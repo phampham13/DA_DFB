@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { createAuthHeader } from "./auth/authHeader";
 import { axiosJWT, req } from "../utils/httpRequest";
 
