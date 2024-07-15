@@ -16,9 +16,11 @@ import { FaPen } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { ApiBOOK } from "../../../services/BookService";
 import Loading from "../../../components/LoadingComponent/Loading";
+import PieChart from "../../../components/PieChart";
 const BookList = () => {
   const token = localStorage.getItem("token");
   const [data, setData] = useState([]);
+  const [datachart, setDataChart] = useState([]);
   const [page, setPage] = useState(10);
 
   const [request, setRequest] = useState({
@@ -32,7 +34,7 @@ const BookList = () => {
   const [addModal, setAddModal] = useState(false);
 
   const [IdDelete, setIdDelete] = useState();
-  const [bookNameDelete, setBookNameDelete] = useState("")
+  const [bookNameDelete, setBookNameDelete] = useState("");
   const [reload, setReload] = useState(false);
 
   const [selectedRow, setSelectedRow] = useState({});
@@ -64,8 +66,18 @@ const BookList = () => {
       setPage(res.data.length);
     }
     setData(res.data);
+
+    setDataChart(res);
     setIsLoad(false);
   };
+  const chartData = [
+    { type: "Tổng số sách", value: datachart.booksTotalQuantity },
+
+    {
+      type: "Số sách đã mượn",
+      value: datachart.booksTotalQuantity - datachart.booksAvailable,
+    },
+  ];
   useEffect(() => {
     const fetchData = async () => {
       await getAll();
@@ -179,6 +191,7 @@ const BookList = () => {
         text
       ),
   });
+
   const columns = [
     {
       title: "STT",
@@ -305,7 +318,7 @@ const BookList = () => {
   const handleDelete1 = async (id, name) => {
     setShowDeleteModal(!showDeleteModal);
     setIdDelete(id);
-    setBookNameDelete(name)
+    setBookNameDelete(name);
   };
   const onSelectChange = (newSelectedRowKeys) => {
     setSelectedRowKeys(newSelectedRowKeys);
@@ -366,13 +379,17 @@ const BookList = () => {
     if (res.status === "OK") {
       toast.success("Xóa thành công");
     } else {
-      toast.error(res.message)
+      toast.error(res.message);
     }
-    setShowDeleteManyModal(false)
+    setShowDeleteManyModal(false);
   };
   return (
     <>
       <div className={cx("wrap")}>
+        <div style={{ padding: 20 }}>
+          <h1>Biểu đồ sách</h1>
+          <PieChart data={chartData} />
+        </div>
         <div className={cx("topBar")}>
           <Button onClick={handleShowAdd} type="primary">
             Thêm sách
@@ -401,10 +418,7 @@ const BookList = () => {
             Bạn chắc chắn muốn xóa {selectedRowKeys.length} sách?
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              type="primary"
-              onClick={handleCloseDeleteManyModal}
-            >
+            <Button type="primary" onClick={handleCloseDeleteManyModal}>
               Hủy
             </Button>
             <Button type="primary" danger onClick={handleDeleteMany}>
@@ -417,14 +431,9 @@ const BookList = () => {
           <Modal.Header closeButton>
             <Modal.Title>Xác nhận xóa</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            Bạn chắc chắn muốn xóa sách: {bookNameDelete}
-          </Modal.Body>
+          <Modal.Body>Bạn chắc chắn muốn xóa sách: {bookNameDelete}</Modal.Body>
           <Modal.Footer>
-            <Button
-              type="primary"
-              onClick={handleCloseDeleteModal}
-            >
+            <Button type="primary" onClick={handleCloseDeleteModal}>
               Hủy
             </Button>
             <Button type="primary" danger onClick={handleDelete}>
@@ -441,10 +450,7 @@ const BookList = () => {
             <ModalBookDetail book={selectedRow} />
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              type="primary"
-              onClick={handleCloseModal}
-            >
+            <Button type="primary" onClick={handleCloseModal}>
               Đóng
             </Button>
           </Modal.Footer>
