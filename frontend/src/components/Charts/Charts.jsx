@@ -76,4 +76,52 @@ const OffBorrowerSlipChart = ({ data }) => {
     );
 };
 
-export { MonthlySalesChart, BorrowerSlipChart, OffBorrowerSlipChart };
+const PenaltyChart = ({ data }) => {
+    return (
+        <ResponsiveContainer width="100%" height={300} minWidth={400} minHeight={300}>
+            <BarChart
+                data={data}
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="paidLateFee" stackId="a" fill="#59f061" />
+                <Bar dataKey="unPaidLateFee" stackId="a" fill="#ffc658" />
+            </BarChart>
+        </ResponsiveContainer>
+    );
+};
+
+const OffPenaltyChart = ({ data }) => {
+    return (
+        <ResponsiveContainer width="100%" height={300} minWidth={400} minHeight={300}>
+            <BarChart
+                data={data}
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="paidLateFee" stackId="a" fill="#59f061" />
+                <Bar dataKey="unPaidLateFee" stackId="a" fill="#ffc658" />
+            </BarChart>
+        </ResponsiveContainer>
+    );
+};
+
+export { MonthlySalesChart, BorrowerSlipChart, OffBorrowerSlipChart, PenaltyChart, OffPenaltyChart };

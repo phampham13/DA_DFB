@@ -35,10 +35,13 @@ const OffBorrowerSlip = () => {
   const [data, setData] = useState([]);
 
   const [defaultState, setdefaultState] = useState(0);
+  const [lateFee, setLateFee] = useState(0);
+  const [paidLateFee, setPaidLateFee] = useState(true)
   const [selectedRow, setSelectedRow] = useState([]);
 
   const [datasrc, setDatasrc] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [showInput, setShowInput] = useState(false);
 
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [IsLoad, setIsLoad] = useState(false);
@@ -61,11 +64,7 @@ const OffBorrowerSlip = () => {
   ];
 
   const { user, token } = useContext(AuthContext);
-  const [request, setRequest] = useState({
-    limit: 10,
-    page: 0,
-    sort: "price",
-  });
+
   const getAllData = async () => {
     setIsLoad(true);
 
@@ -150,6 +149,9 @@ const OffBorrowerSlip = () => {
     setDatasrc(src);
     setdefaultState(src.state);
     setshowModalUpdate(true);
+    if (src.state === 2 && src.lateFee > 0) {
+      setShowInput(true)
+    }
   };
 
   const handleDelete = async (id) => {
@@ -176,6 +178,11 @@ const OffBorrowerSlip = () => {
   const handleCloseModalDetail = () => setShowDetailModal(false);
   const onChange = (e) => {
     setdefaultState(e.target.value);
+    if (e.target.value === 2 && datasrc.state === 3 && showInput === false) {  //if (e.target.value === 2 && datasrc.state === 3) {
+      setShowInput(true);
+    } /*else {
+      setshowInput(false);
+    }*/
   };
   const handleDeleteMany = async () => {
     const ids = [...selectedRowKeys];
@@ -192,9 +199,15 @@ const OffBorrowerSlip = () => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
+
+  const handleChange = (event) => {
+    setLateFee(event.target.value);
+  };
   const UpdateState = async () => {
     const body = {
       newState: defaultState,
+      lateFee: lateFee,
+      paidLateFee: paidLateFee
     };
     await UpdateBr(token, datasrc._id, body).then((res) => {
       if (res) {
@@ -228,9 +241,7 @@ const OffBorrowerSlip = () => {
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
+          onChange={onChange}
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{
             marginBottom: 8,
@@ -537,6 +548,25 @@ const OffBorrowerSlip = () => {
                 </Radio>
               ))}
             </Radio.Group>
+            {showInput === true && (
+              <div>
+                <label htmlFor="lateFeeInput" defaultValue={datasrc?.lateFee || 0}>Phí phạt trả muộn:</label>
+                <input
+                  type="text"
+                  id="lateFeeInput"
+                  value={lateFee}
+                  onChange={handleChange}
+                />
+                <Radio.Group
+                  defaultValue={paidLateFee}
+                  onChange={(e) => setPaidLateFee(e.target.value)}
+                  style={{ padding: "15px" }}
+                >
+                  <Radio key={true} value={true}>Đã nộp phí phạt</Radio>
+                  <Radio key={false} value={false}>Chưa nộp phí phạt</Radio>
+                </Radio.Group>
+              </div>
+            )}
           </div>
         </Modal.Body>
         <Modal.Footer>

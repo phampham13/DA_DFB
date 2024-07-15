@@ -6,7 +6,7 @@ import numeral from 'numeral';
 import axios from 'axios';
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../../contexts/AuthContext';
-import { MonthlySalesChart, BorrowerSlipChart, OffBorrowerSlipChart } from '../../../components/Charts/Charts';
+import { MonthlySalesChart, BorrowerSlipChart, OffBorrowerSlipChart, PenaltyChart, OffPenaltyChart } from '../../../components/Charts/Charts';
 import { borrowerSlipStatistic } from '../../../services/BorrowerSlipService';
 import { offBorrowerSlipStatistic } from '../../../services/OffBorrowerSlipService';
 import { revenueStatistic } from '../../../services/OrderService';
@@ -18,6 +18,8 @@ const Statistics = () => {
     const [year, setYear] = useState(dayjs().year());
     const [salesData, setSalesData] = useState([]);
     const [totalRevenue, setTotalRevenue] = useState(0)
+    const [penaltyFee, setPenaltyFee] = useState({})
+    const [offPenaltyFee, setOffPenaltyFee] = useState({})
     const [bSlip, setBSlip] = useState({});
     const [offBSlip, setOffBSlip] = useState({});
 
@@ -39,8 +41,10 @@ const Statistics = () => {
 
             const res2 = await offBorrowerSlipStatistic(token, year)
 
-            setBSlip(res1.data);
-            setOffBSlip(res2.data);
+            setBSlip(res1.data1);
+            setPenaltyFee(res1.data2);
+            setOffBSlip(res2.data1);
+            setOffPenaltyFee(res2.data2)
         };
 
         fetchSalesData();
@@ -81,6 +85,31 @@ const Statistics = () => {
                             <p>Tổng sách: <span>{offBSlip.totalBorrowedBook}</span></p>
                         </div>
                         <OffBorrowerSlipChart data={offBSlip.monthlySlipStats} />
+                    </div>
+                </div>
+            ),
+        },
+        {
+            key: '3',
+            label: 'Thống kê phí phạt',
+            children: (
+                <div className={cx("chart-area")}>
+                    <div className={cx("chart-container")}>
+                        <h5>Mượn trực tiếp</h5>
+                        <div className={cx("about")}>
+                            <p>Tổng phí phạt: <span>{penaltyFee.totalLateFee}</span></p>
+                            <p>Tổng phí phạt đã nộp: <span>{penaltyFee.totalPaidLateFee}</span></p>
+                        </div>
+                        <OffPenaltyChart data={penaltyFee.monthlyPenalty} />
+                    </div>
+                    <div className={cx("chart-container")}>
+                        <h5>Mượn online</h5>
+                        <div className={cx("about")}>
+
+                            <p>Tổng phí phạt: <span>{offPenaltyFee.totalLateFee}</span></p>
+                            <p>Tổng phí phạt đã nộp: <span>{offPenaltyFee.totalPaidLateFee}</span></p>
+                        </div>
+                        <PenaltyChart data={offPenaltyFee.monthlyPenalty} />
                     </div>
                 </div>
             ),

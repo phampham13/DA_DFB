@@ -49,6 +49,7 @@ const OnBorrowerSlip = () => {
   const [showModal, setShowModal] = useState(false);
 
   const [showInput, setshowInput] = useState(false);
+  const [paidLateFee, setPaidLateFee] = useState(false);
 
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [IsLoad, setIsLoad] = useState(false);
@@ -179,6 +180,9 @@ const OnBorrowerSlip = () => {
     setDatasrc(src);
     setdefaultState(src.state);
     setshowModalUpdate(true);
+    if (src.state === 2 && src.lateFee > 0) {
+      setshowInput(true)
+    }
   };
 
   const handleDelete = async (id) => {
@@ -205,11 +209,11 @@ const OnBorrowerSlip = () => {
   const handleCloseModalDetail = () => setShowDetailModal(false);
   const onChange = (e) => {
     setdefaultState(e.target.value);
-    if (e.target.value === 2 && datasrc.state === 3) {
+    if (e.target.value === 2 && datasrc.state === 3 && showInput === false) {  //if (e.target.value === 2 && datasrc.state === 3) {
       setshowInput(true);
-    } else {
+    } /*else {
       setshowInput(false);
-    }
+    }*/
   };
   const handleDeleteMany = async () => {
     const ids = [...selectedRowKeys];
@@ -232,17 +236,11 @@ const OnBorrowerSlip = () => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const UpdateState = async () => {
-    let body = {};
-    if (showInput === true) {
-      body = {
-        newState: defaultState,
-        lateFee: lateFee,
-      };
-    } else {
-      body = {
-        newState: defaultState,
-      };
-    }
+    const body = {
+      newState: defaultState,
+      lateFee: lateFee,
+      paidLateFee: paidLateFee
+    };
     await UpdateSlipOn(token, datasrc._id, body).then((res) => {
       if (res) {
         if (res.status != "OK") {
@@ -394,7 +392,7 @@ const OnBorrowerSlip = () => {
       },
     },
     {
-      title: "Tổng số lượng",
+      title: "Số sách",
       dataIndex: "totalAmount",
       key: "totalAmount",
       width: "20%",
@@ -586,7 +584,7 @@ const OnBorrowerSlip = () => {
 
       <Modal show={showModalUpdate} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Xác thay đổi trạng thái</Modal.Title>
+          <Modal.Title>Thay đổi trạng thái phiếu</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>
@@ -603,15 +601,23 @@ const OnBorrowerSlip = () => {
                 )
               )}
             </Radio.Group>
-            {showInput == true && (
+            {showInput === true && (
               <div>
-                <label htmlFor="lateFeeInput">Phí phạt trả muộn:</label>
+                <label htmlFor="lateFeeInput" defaultValue={datasrc?.lateFee || 0}>Phí phạt trả muộn:</label>
                 <input
                   type="text"
                   id="lateFeeInput"
                   value={lateFee}
                   onChange={handleChange}
                 />
+                <Radio.Group
+                  defaultValue={paidLateFee}
+                  onChange={(e) => setPaidLateFee(e.target.value)}
+                  style={{ padding: "15px" }}
+                >
+                  <Radio key={true} value={true}>Đã nộp phí phạt</Radio>
+                  <Radio key={false} value={false}>Chưa nộp phí phạt</Radio>
+                </Radio.Group>
               </div>
             )}
           </div>

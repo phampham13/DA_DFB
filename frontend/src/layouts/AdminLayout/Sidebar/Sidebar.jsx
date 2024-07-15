@@ -247,7 +247,7 @@ function Sidebar({ setToggleButton }) {
                     onClick={() => handleActive("listBorrower")}
                   >
                     <div className={cx("menuItemTitle")}>
-                      <span>Danh sách bạn đọc</span>
+                      <span>Danh sách người dùng</span>
                     </div>
                   </Link>
                 </div>

@@ -32,7 +32,7 @@ const BorrowerSlips = () => {
     const getAll = async () => {
         const res = await getUserBrSlip(token, user.id)
         const data = res.data
-        setLateBrSlip(data.filter((item) => item.state === 2 && item.lateFee && item.lateFee > 0)) //
+        setLateBrSlip(data.filter((item) => item.state === 2 && item.lateFee > 0 && item.paidLateFee === false)) //
         setOverDueBrSlip(data.filter((item) => item.state === 3))
         setBookTotal(data.reduce((sum, cur) => sum + cur.totalAmount, 0))
         setlistBS(res.data)
@@ -107,9 +107,9 @@ const BorrowerSlips = () => {
                 {(overDueBrSlip.length > 0 || lateBrSlip.length > 0) && (
                     <div>
                         {overDueBrSlip.length > 0 && <p>Bạn có <span style={{ fontWeight: 550, fontSize: '1.1em', color: 'red' }}>{overDueBrSlip.length}</span> phiếu mượn quá hạn </p>}
-                        {lateBrSlip.length > 0 && <p>Bạn có <span style={{ fontWeight: 550, fontSize: '1.1em', color: 'red' }}>{lateBrSlip.length}</span> phiếu trả muộn </p>}
-                        <p><i> Vui lòng trả lại thư viện sớm nhất có thể. Tài khoản của bạn sẽ bị khóa đến khi bạn trả lại sách, đóng phí phạt trả muộn hoặc nộp phí làm mất sách. </i></p>
-                        <p><span style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => handlePayFee()}>Xem phí phạt</span></p>
+                        {lateBrSlip.length > 0 && <p>Bạn có <span style={{ fontWeight: 550, fontSize: '1.1em', color: 'red' }}>{lateBrSlip.length}</span> phiếu chưa thanh toán phí phạt </p>}
+                        <p><i> Vui lòng trả lại thư viện/ nộp phạt sớm nhất có thể. Tài khoản của bạn sẽ bị khóa đến khi bạn trả lại sách và đóng phí phạt trả muộn </i></p>
+                        <p><span style={{ color: 'red', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => handlePayFee()}>Xem tổng phí phạt</span></p>
                         {payUrl && fee &&
                             <p>
                                 Phí phạt của bạn là {convertPrice(fee)} <br></br>
@@ -125,22 +125,29 @@ const BorrowerSlips = () => {
                     {listBS.map((slip) => {
                         const isPending = slip.state === 0
                         const isBorrowing = slip.state === 1
-                        const isReturned = slip.state === 2
+                        const isReturned = slip.state === 2 && !slip.lateFee
+                        const isReturnedLate = slip.state === 2 && slip.lateFee
                         const isOverDue = slip.state === 3
                         return (
                             <div className={cx('item')} key={slip._id}>
                                 <img src={slip.books[0].bookId.coverImg} style={{ width: '75px', height: '100px', objectFit: 'contain' }} />
-                                <div style={{ width: '30%' }}>
+                                <div style={{ width: '25%' }}>
                                     <p><b>Người nhận: </b></p>
                                     <p>{slip.shippingAddress.name}</p>
+                                </div>
+                                <div style={{ width: '20%', fontSize: '0.8em', lineHeight: '16px' }}>
+                                    {isReturnedLate && slip.paidLateFee === false &&
+                                        <i>Chưa nộp phí phạt</i>
+                                    }
                                 </div>
                                 <div style={{ width: '20%' }}>
                                     {isPending && <Chip label="Chờ xác nhận" color="warning" variant="outlined" size="large" sx={{ width: '120px', borderWidth: '2px' }} onClick={() => handleCancel(slip)}></Chip>}
                                     {isBorrowing && <Chip label="Đang mượn" color="primary" variant="outlined" size="large" sx={{ width: '100px', borderWidth: '2px' }} ></Chip>}
                                     {isReturned && <Chip label="Đã trả" color="success" variant="outlined" size="large" sx={{ width: '100px', borderWidth: '2px' }}></Chip>}
+                                    {isReturnedLate && <Chip label="Trả muộn" color="success" variant="outlined" size="large" sx={{ width: '100px', borderWidth: '2px' }}></Chip>}
                                     {isOverDue && <Chip label="Quá hạn" color="error" variant="outlined" size="large" sx={{ width: '100px', borderWidth: '2px' }}></Chip>}
                                 </div>
-                                <div style={{ width: '20%' }} >
+                                <div style={{ width: '15%' }} >
                                     <button onClick={() => handleGetDetail(slip)}>Chi tiết</button>
                                 </div>
                             </div>

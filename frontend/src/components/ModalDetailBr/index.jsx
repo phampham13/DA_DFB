@@ -3,6 +3,7 @@ import "./ModalDetail.scss";
 import { Numeral } from "react-numeral";
 import moment from "moment";
 import Chip from "@mui/material/Chip";
+import { CloseCircleTwoTone, CheckCircleTwoTone } from "@ant-design/icons";
 const ModalDetailBr = ({ datasrc }) => {
   return (
     <div className="order-container">
@@ -21,8 +22,8 @@ const ModalDetailBr = ({ datasrc }) => {
           {<Numeral value={datasrc.totalAmount} format={"0,0"} />}
         </p>
 
-        <div className="order-field" style={{ display: 'flex', justifyContent: 'flex-start', gap: '7px' }}>
-          <strong>Trạng thái:</strong>{" "}
+        <div className="order-field" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', gap: '7px' }}>
+          <div><strong>Trạng thái:</strong></div>
           {datasrc.state === 1 ? (
             <Chip label="Đang mượn" color="warning" variant="outlined" />
           ) : datasrc.state === 2 ? (
@@ -31,6 +32,14 @@ const ModalDetailBr = ({ datasrc }) => {
             <Chip label="Quá hạn" variant="outlined" color="error" />
           )}
         </div>
+        {(datasrc.lateFee && datasrc.lateFee > 0) ? (
+          <p>
+            <strong>Phí phạt :</strong> {' '} {datasrc.lateFee}
+            {datasrc.paidLateFee === true ?
+              <span><CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: '1em', margin: '0 5px' }} />đã đóng phí phạt</span>
+              : <span><CloseCircleTwoTone twoToneColor="#eb2f96" style={{ fontSize: '1em', margin: '0 5px' }} />chưa đóng phí phạt</span>}
+          </p>
+        ) : null}
       </div>
       <div className="order-details">
         <p className="order-header">

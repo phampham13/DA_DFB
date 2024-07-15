@@ -92,19 +92,26 @@ export const BookDetail = () => {
             <p className={cx("total")}><strong>Tổng số lượng: {book.quantityTotal}</strong></p>
             <p className={cx("avail")}><strong>Sẵn có để mượn: <span>{book.quantityAvailable}</span></strong></p>
 
-            <div className={cx("count")}>
-              <p className={cx("control")} onClick={decreaseCount}>
-                -
-              </p>
-              <p>{count}</p>
-              <p className={cx("control")} onClick={increaseCount}>
-                +
-              </p>
-            </div>
-
-            <div onClick={() => handleAddToCard()} className={cx("addCard")}>
-              <p>Thêm vào thẻ đọc</p>
-            </div>
+            {book.bookId && book.bookId.includes('DB-') ? (
+              <div>
+                <p style={{ fontSize: '1.1em', color: `var(--sub-color2)` }}>Sách đọc tại chỗ, không thể mượn mang về</p>
+              </div>
+            ) : (
+              <div>
+                <div className={cx("count")}>
+                  <p className={cx("control")} onClick={decreaseCount}>
+                    -
+                  </p>
+                  <p>{count}</p>
+                  <p className={cx("control")} onClick={increaseCount}>
+                    +
+                  </p>
+                </div>
+                <div onClick={() => handleAddToCard()} className={cx("addCard")}>
+                  <p>Thêm vào thẻ đọc</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
